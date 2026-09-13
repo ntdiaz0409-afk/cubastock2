@@ -1,6 +1,7 @@
 // Carga backend/.env sin depender del directorio de trabajo desde el que se
 // arranca el proceso (npm run dev en la raíz, node backend/index.js, etc.).
 const path = require('path')
+const fs = require('fs')
 require('dotenv').config({ path: path.join(__dirname, '.env') })
 
 const express = require('express')
@@ -1646,6 +1647,22 @@ async function ensureInitialAdmin() {
     [passwordHash]
   )
   console.log('✅ Usuario administrador inicial "admin" creado (borra BOOTSTRAP_ADMIN_PASSWORD tras el primer arranque)')
+}
+
+// ==============================================
+// SERVIR FRONTEND COMPILADO (mismo origen que la API)
+// ==============================================
+// En producción el backend también sirve el frontend compilado: un solo
+// origen significa cero problemas de CORS, de service worker cross-origin y
+// de configuración de API_URL. Las rutas /api/* se registran antes y no se
+// ven afectadas; cualquier otra ruta devuelve la SPA para el enrutado
+// del lado del cliente.
+const frontendDist = path.join(__dirname, '..', 'frontend', 'dist')
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist))
+  app.get(/^\/(?!api\/).*/, (_req, res) => {
+    res.sendFile(path.join(frontendDist, 'index.html'))
+  })
 }
 
 // ==============================================
