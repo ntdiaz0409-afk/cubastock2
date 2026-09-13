@@ -54,7 +54,13 @@ function App() {
     }
   }, [])
 
-  /** Envía credenciales al backend y persiste el token y usuario si la respuesta es válida. */
+  /**
+   * Envía credenciales al backend y persiste el token y usuario si la respuesta es válida.
+   * Reintenta automáticamente cuando el backend no responde: en el plan gratuito
+   * de Render el servidor se duerme tras inactividad y la primera petición del
+   * día debe despertarlo (30-60 s). Sin reintentos, el Service Worker devolvía
+   * su JSON de "Sin conexión a Internet" y el usuario veía un error falso.
+   */
   async function handleLogin(event) {
     event.preventDefault()
 
@@ -65,27 +71,53 @@ function App() {
       return
     }
 
+    const credentials = { username: username.trim(), password }
+    const MAX_ATTEMPTS = 4
+    const BACKOFF_MS = [0, 2000, 6000, 15000]
+
     try {
       setLoading(true)
 
-      const response = await fetch(`${API_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username.trim(), password }),
-      })
+      for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+        if (attempt > 1) {
+          setError(`El servidor está despertando (intento ${attempt} de ${MAX_ATTEMPTS}). La primera conexión del día puede tardar hasta 1 minuto…`)
+          await new Promise((resolve) => setTimeout(resolve, BACKOFF_MS[attempt - 1]))
+        }
 
-      const data = await response.json()
+        let response
+        try {
+          response = await fetch(`${API_URL}/api/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credentials),
+          })
+        } catch {
+          // Fallo de red real (o el Service Worker no alcanzó el servidor).
+          // Reintentable mientras queden intentos.
+          continue
+        }
 
-      if (!response.ok) {
-        throw new Error(data.error || 'No se pudo iniciar sesión.')
+        const data = await response.json().catch(() => ({}))
+
+        if (response.ok) {
+          localStorage.setItem('cubastock_token', data.token)
+          localStorage.setItem('cubastock_user', JSON.stringify(data.user))
+
+          setUser(data.user)
+          setUsername('')
+          setPassword('')
+          return
+        }
+
+        // 503 con offline:true = respuesta del Service Worker sin poder
+        // contactar el backend; también es reintentable.
+        const retriable = response.status === 503 || data.offline === true
+        if (!retriable) {
+          throw new Error(data.error || 'No se pudo iniciar sesión.')
+        }
       }
 
-      localStorage.setItem('cubastock_token', data.token)
-      localStorage.setItem('cubastock_user', JSON.stringify(data.user))
-
-      setUser(data.user)
-      setUsername('')
-      setPassword('')
+      throw new Error('No se pudo contactar con el servidor. Reintenta dentro de un minuto; si estaba dormido, ya debería estar despierto.')
     } catch (err) {
       setError(err.message || 'Error al iniciar sesión.')
       setPassword('')
