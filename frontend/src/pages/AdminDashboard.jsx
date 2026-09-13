@@ -1,50 +1,67 @@
 // frontend/src/pages/AdminDashboard.jsx
+import { lazy, Suspense } from 'react'
 import { useAppNavigation } from '../hooks/useAppNavigation'
 import DashboardCard from '../components/DashboardCard'
-import InventoryPage from './InventoryPage'
-import SalesPage from './SalesPage'
-import StatisticsPage from './StatisticsPage'
-import DependentsPage from './DependentsPage'
-import HistoryPage from './HistoryPage'
-import ReportsPage from './ReportsPage'
-import BusinessSettingsPage from './BusinessSettingsPage'
+// Carga diferida de los módulos: el bundle inicial solo trae lo necesario
+// para entrar al panel; cada pantalla se descarga la primera vez que se abre.
+// En móviles con datos limitados esto reduce mucho el tiempo de carga inicial.
+const InventoryPage = lazy(() => import('./InventoryPage'))
+const SalesPage = lazy(() => import('./SalesPage'))
+const StatisticsPage = lazy(() => import('./StatisticsPage'))
+const DependentsPage = lazy(() => import('./DependentsPage'))
+const HistoryPage = lazy(() => import('./HistoryPage'))
+const ReportsPage = lazy(() => import('./ReportsPage'))
+const BusinessSettingsPage = lazy(() => import('./BusinessSettingsPage'))
 import PageHeader from '../components/PageHeader'
 import StockAlertBanner from '../components/StockAlertBanner'
 import NotificationPermission from '../components/NotificationPermission'
 import OfflineIndicator from '../components/OfflineIndicator'
+
+/** Fallback mínimo mientras llega el chunk de la pantalla solicitada. */
+function PageLoading() {
+  return (
+    <main className="dashboard-page">
+      <section className="dashboard-content">
+        <div className="empty-state">
+          <strong>Cargando…</strong>
+        </div>
+      </section>
+    </main>
+  )
+}
 
 /** Selecciona el módulo administrativo activo sin cambiar la sesión del usuario. */
 function AdminDashboard({ user, onLogout }) {
   const { view, navigate } = useAppNavigation(['dashboard', 'inventory', 'sales', 'statistics', 'dependents', 'history', 'reports', 'business-settings'])
 
   if (view === 'inventory') {
-    return <InventoryPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} />
+    return <Suspense fallback={<PageLoading />}><InventoryPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} /></Suspense>
   }
 
   if (view === 'sales') {
-    return <SalesPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} />
+    return <Suspense fallback={<PageLoading />}><SalesPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} /></Suspense>
   }
 
   if (view === 'statistics') {
-    return <StatisticsPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} />
+    return <Suspense fallback={<PageLoading />}><StatisticsPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} /></Suspense>
   }
 
   if (view === 'dependents') {
-    return <DependentsPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} />
+    return <Suspense fallback={<PageLoading />}><DependentsPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} /></Suspense>
   }
 
   if (view === 'history') {
-    return <HistoryPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} />
+    return <Suspense fallback={<PageLoading />}><HistoryPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} /></Suspense>
   }
 
   if (view === 'reports') {
-    return <ReportsPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} />
+    return <Suspense fallback={<PageLoading />}><ReportsPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} /></Suspense>
   }
 
   // La configuración ya existía junto a su API; este bloque la incorpora al
   // flujo real de navegación del administrador sin retirar Reportes.
   if (view === 'business-settings') {
-    return <BusinessSettingsPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} />
+    return <Suspense fallback={<PageLoading />}><BusinessSettingsPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} /></Suspense>
   }
 
   return (

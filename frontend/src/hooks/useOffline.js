@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { API_URL, apiFetch } from '../api'
 import { getData, openDB, saveData, saveManyData, STORES } from '../db/db'
 
-const CONNECTION_CHECK_INTERVAL = 20_000
+const CONNECTION_CHECK_INTERVAL = 30_000
 const CONNECTION_TIMEOUT = 5_000
 
 /** Devuelve conectividad, cola pendiente y acciones de sincronización para la UI. */
@@ -106,12 +106,17 @@ export function useOffline() {
   }, [checkConnection, triggerSync])
 
   // Detecta caídas del servidor aunque el navegador no dispare un evento offline.
+  // El ciclo completo de sincronización solo arranca cuando hay operaciones
+  // pendientes; un health-check en verde sin cola no toca IndexedDB ni el API.
   useEffect(() => {
     const intervalId = window.setInterval(async () => {
-      if (await checkConnection()) await triggerSync()
+      if (await checkConnection()) {
+        const count = await updatePendingCount()
+        if (count > 0) await triggerSync()
+      }
     }, CONNECTION_CHECK_INTERVAL)
     return () => window.clearInterval(intervalId)
-  }, [checkConnection, triggerSync])
+  }, [checkConnection, triggerSync, updatePendingCount])
 
   // Prepara IndexedDB y carga el total de operaciones pendientes al arrancar.
   useEffect(() => {

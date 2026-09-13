@@ -1,24 +1,38 @@
 // frontend/src/pages/DependienteDashboard.jsx
+import { lazy, Suspense } from 'react'
 import { useAppNavigation } from '../hooks/useAppNavigation'
 import DashboardCard from '../components/DashboardCard'
-import SalesPage from './SalesPage'
-import InventoryPage from './InventoryPage'
+const SalesPage = lazy(() => import('./SalesPage'))
+const InventoryPage = lazy(() => import('./InventoryPage'))
 import PageHeader from '../components/PageHeader'
 import DailySalesComparison from '../components/DailySalesComparison'
 import StockAlertBanner from '../components/StockAlertBanner'
 import NotificationPermission from '../components/NotificationPermission'
 import OfflineIndicator from '../components/OfflineIndicator'
 
+/** Fallback mínimo mientras llega el chunk de la pantalla solicitada. */
+function PageLoading() {
+  return (
+    <main className="dashboard-page">
+      <section className="dashboard-content">
+        <div className="empty-state">
+          <strong>Cargando…</strong>
+        </div>
+      </section>
+    </main>
+  )
+}
+
 /** Limita el menú y las rutas internas a las operaciones permitidas al dependiente. */
 function DependienteDashboard({ user, onLogout }) {
   const { view, navigate } = useAppNavigation(['dashboard', 'inventory', 'sales'])
 
   if (view === 'sales') {
-    return <SalesPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} />
+    return <Suspense fallback={<PageLoading />}><SalesPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} /></Suspense>
   }
 
   if (view === 'inventory') {
-    return <InventoryPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} />
+    return <Suspense fallback={<PageLoading />}><InventoryPage user={user} onBack={() => navigate('dashboard')} onLogout={onLogout} /></Suspense>
   }
 
   return (
