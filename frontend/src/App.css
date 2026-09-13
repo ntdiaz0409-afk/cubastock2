@@ -2213,3 +2213,90 @@ input:focus, select:focus {
   background: rgba(120, 160, 210, 0.45);
 }
 *::-webkit-scrollbar-track { background: transparent; }
+
+/* =========================================================
+   CAPA RENDIMIENTO MÓVIL — Loop de optimización
+   ========================================================= */
+
+/* El movimiento del fondo lo da únicamente el canvas optimizado
+   (AnimatedBackground), que además se pausa al cambiar de pestaña.
+   Los gradientes fijos quedan estáticos: cero animaciones de capas. */
+body::before, body::after {
+  animation: none !important;
+}
+/* Nebulosa: sin blur(80px) (el filtro más caro de la página). El toque
+   de profundidad lo aporta un gradiente estático y muy sutil. */
+body::after {
+  background:
+    radial-gradient(circle at 25% 35%, rgba(56, 189, 248, 0.05), transparent 40%),
+    radial-gradient(circle at 75% 65%, rgba(34, 211, 238, 0.04), transparent 40%);
+  filter: none;
+}
+
+/* Capas decorativas retiradas del HTML: por si quedara alguna referencia
+   antigua en caché, se neutralizan por completo. */
+.particles-container, .stars, .star, .particle, .particle-sm,
+.dashboard-grid-bg, .wave-bg, .scanlines {
+  display: none !important;
+}
+
+/* --- MÓVIL: la cabecera ya no desborda. El área de usuario se compacta:
+   nombre y rol ocultos (queda el tema, soporte como icono y salir). --- */
+@media (max-width: 560px) {
+  .dashboard-header {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+  .dashboard-brand {
+    min-width: 0;
+    gap: 8px;
+  }
+  .dashboard-brand h1 {
+    font-size: 18px !important;
+    white-space: nowrap;
+  }
+  .dashboard-brand .business-logo {
+    width: 32px !important;
+    height: 32px !important;
+    flex-shrink: 0;
+  }
+  .user-area {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .user-info {
+    display: none;
+  }
+  .support-button span {
+    display: none;
+  }
+  .support-button {
+    width: 38px;
+    padding: 0;
+  }
+  .logout-button {
+    height: 34px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+  .header-icon-button, .back-button {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+  }
+}
+
+/* --- MÓVIL: blur reducido (el backdrop-filter completo es de lo más caro
+   en GPUs de teléfono) y decoración de tarjetas más sobria. --- */
+@media (max-width: 760px) {
+  .dashboard-card, .login-card, .stat-card, .product-card {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .dashboard-content {
+    padding: 24px 16px 48px;
+  }
+  .welcome h2, .inventory-heading h2 {
+    font-size: 24px;
+  }
+}

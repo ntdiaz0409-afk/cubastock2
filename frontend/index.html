@@ -24,73 +24,10 @@
          ============================================ -->
     <div id="root"></div>
 
-    <!-- ============================================
-         FONDO ANIMADO - PARTÍCULAS
-         ============================================ -->
-    <div class="particles-container">
-      <!-- Partículas principales -->
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      
-      <!-- Partículas pequeñas -->
-      <div class="particle-sm"></div>
-      <div class="particle-sm"></div>
-      <div class="particle-sm"></div>
-      <div class="particle-sm"></div>
-      <div class="particle-sm"></div>
-      <div class="particle-sm"></div>
-      <div class="particle-sm"></div>
-      <div class="particle-sm"></div>
-    </div>
-
-    <!-- ============================================
-         FONDO ANIMADO - ESTRELLAS
-         ============================================ -->
-    <div class="stars">
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-    </div>
-
-    <!-- ============================================
-         FONDO ANIMADO - GRID TECNOLÓGICO
-         ============================================ -->
-    <div class="dashboard-grid-bg"></div>
-
-    <!-- ============================================
-         FONDO ANIMADO - OLA INFERIOR
-         ============================================ -->
-    <div class="wave-bg"></div>
-
-    <!-- ============================================
-         FONDO ANIMADO - LÍNEAS DE ESCANEO
-         ============================================ -->
-    <div class="scanlines"></div>
+    <!-- El fondo animado es único: AnimatedBackground (canvas optimizado).
+         Las capas decorativas antiguas (partículas DOM, estrellas, grid,
+         ola, scanlines) se retiraron: duplicaban el canvas, costaban GPU
+         en móviles y provocaban desbordamiento horizontal. -->
 
     <!-- ============================================
          SCRIPT PRINCIPAL (VITE)
