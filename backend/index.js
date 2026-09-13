@@ -1610,13 +1610,6 @@ app.put('/api/business-settings', authenticateToken, requireAdmin, async (req, r
 // abajo. Las rutas /api/* se registran antes y no se ven afectadas; cualquier
 // otra ruta devuelve la SPA para el enrutado del lado del cliente.
 const frontendDist = path.join(__dirname, '..', 'frontend', 'dist')
-// Diagnóstico temporal: qué ve el proceso en el filesystem de Render.
-app.get('/api/debug/dist', (_req, res) => {
-  const base = path.join(__dirname, '..')
-  let listing = []
-  try { listing = fs.readdirSync(base) } catch (e) { listing = ['ERR: ' + e.message] }
-  res.json({ __dirname, base, frontendDist, hasDist: fs.existsSync(frontendDist), listing })
-})
 if (fs.existsSync(frontendDist)) {
   app.use(express.static(frontendDist))
   app.get(/^\/(?!api\/).*/, (_req, res) => {
