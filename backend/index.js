@@ -188,6 +188,9 @@ const CORS_ORIGINS = (process.env.CORS_ORIGIN || '')
   .map((origin) => origin.trim())
   .filter(Boolean)
 
+const compression = require('compression')
+
+app.use(compression())
 app.use(cors(CORS_ORIGINS.length > 0 ? { origin: CORS_ORIGINS } : {}))
 app.use(express.json())
 
