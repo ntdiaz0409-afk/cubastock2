@@ -1602,6 +1602,29 @@ app.put('/api/business-settings', authenticateToken, requireAdmin, async (req, r
 })
 
 // ==============================================
+// SERVIR FRONTEND COMPILADO (mismo origen que la API)
+// ==============================================
+// En producción el backend también sirve el frontend compilado: un solo
+// origen significa cero problemas de CORS, de service worker cross-origin y
+// de configuración de API_URL. Debe registrarse ANTES del catch-all 404 de
+// abajo. Las rutas /api/* se registran antes y no se ven afectadas; cualquier
+// otra ruta devuelve la SPA para el enrutado del lado del cliente.
+const frontendDist = path.join(__dirname, '..', 'frontend', 'dist')
+// Diagnóstico temporal: qué ve el proceso en el filesystem de Render.
+app.get('/api/debug/dist', (_req, res) => {
+  const base = path.join(__dirname, '..')
+  let listing = []
+  try { listing = fs.readdirSync(base) } catch (e) { listing = ['ERR: ' + e.message] }
+  res.json({ __dirname, base, frontendDist, hasDist: fs.existsSync(frontendDist), listing })
+})
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist))
+  app.get(/^\/(?!api\/).*/, (_req, res) => {
+    res.sendFile(path.join(frontendDist, 'index.html'))
+  })
+}
+
+// ==============================================
 // 404
 // ==============================================
 
@@ -1647,29 +1670,6 @@ async function ensureInitialAdmin() {
     [passwordHash]
   )
   console.log('✅ Usuario administrador inicial "admin" creado (borra BOOTSTRAP_ADMIN_PASSWORD tras el primer arranque)')
-}
-
-// ==============================================
-// SERVIR FRONTEND COMPILADO (mismo origen que la API)
-// ==============================================
-// En producción el backend también sirve el frontend compilado: un solo
-// origen significa cero problemas de CORS, de service worker cross-origin y
-// de configuración de API_URL. Las rutas /api/* se registran antes y no se
-// ven afectadas; cualquier otra ruta devuelve la SPA para el enrutado
-// del lado del cliente.
-const frontendDist = path.join(__dirname, '..', 'frontend', 'dist')
-// Diagnóstico temporal: qué ve el proceso en el filesystem de Render.
-app.get('/api/debug/dist', (_req, res) => {
-  const base = path.join(__dirname, '..')
-  let listing = []
-  try { listing = fs.readdirSync(base) } catch (e) { listing = ['ERR: ' + e.message] }
-  res.json({ __dirname, base, frontendDist, hasDist: fs.existsSync(frontendDist), listing })
-})
-if (fs.existsSync(frontendDist)) {
-  app.use(express.static(frontendDist))
-  app.get(/^\/(?!api\/).*/, (_req, res) => {
-    res.sendFile(path.join(frontendDist, 'index.html'))
-  })
 }
 
 // ==============================================
