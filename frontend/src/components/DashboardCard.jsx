@@ -1,17 +1,25 @@
 // frontend/src/components/DashboardCard.jsx
+import Icon from './Icon'
+
+/**
+ * Tarjeta de navegación de módulo. El icono es un nombre del sistema SVG
+ * (Icon.jsx): trazo fino y consistente en lugar de emojis.
+ */
 function DashboardCard({ title, description, icon, onClick }) {
   return (
-    <div className="dashboard-card" onClick={onClick}>
-      <div className="card-icon">{icon}</div>
-      <div>
-        <h3 style={{ color: '#eef7ff', margin: '2px 0 6px', fontSize: '17px', fontWeight: 600 }}>
-          {title}
-        </h3>
-        <p style={{ color: '#b5c7df', margin: 0, fontSize: '13px', lineHeight: '1.4' }}>
-          {description}
-        </p>
+    <div className="dashboard-card" onClick={onClick} role="button" tabIndex={0}
+      onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') onClick() }}>
+      <div className="card-icon">
+        <Icon name={icon} size={22} />
       </div>
-      <span className="card-action">Abrir →</span>
+      <div className="dashboard-card-body">
+        <h3>{title}</h3>
+        <p>{description}</p>
+      </div>
+      <span className="card-action">
+        Abrir
+        <Icon name="arrowRight" size={14} className="card-action-arrow" />
+      </span>
     </div>
   )
 }
@@ -20,5 +28,5 @@ export default DashboardCard
 /**
  * Propósito: tarjeta de navegación reutilizable en los dashboards.
  * Responsabilidades: mostrar una acción de módulo y propagar su click.
- * Dependencias: AdminDashboard y DependienteDashboard.
+ * Dependencias: Icon y los dashboards por rol.
  */

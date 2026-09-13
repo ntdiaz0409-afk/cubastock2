@@ -64,14 +64,14 @@ function DependienteDashboard({ user, onLogout }) {
           <DashboardCard
             title="Ventas"
             description="Registrar nuevas ventas."
-            icon="₱"
+            icon="sales"
             onClick={() => navigate('sales')}
           />
 
           <DashboardCard
             title="Inventario"
             description="Consultar productos y existencias."
-            icon="▦"
+            icon="box"
             onClick={() => navigate('inventory')}
           />
         </div>

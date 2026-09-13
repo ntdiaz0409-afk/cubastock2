@@ -2045,3 +2045,171 @@ select:disabled {
 .notification-item p, .notification-sync-section p { margin: 3px 0 0; color: var(--text-secondary); font-size: 12px; line-height: 1.4; }
 .notification-sync-section { margin-top: 12px; padding: 12px; border: 1px solid rgba(251, 191, 36, .2); border-radius: 8px; background: rgba(251, 191, 36, .05); }
 @media (max-width: 560px) { .notification-panel { position: fixed; top: 62px; left: 16px; } }
+
+/* =========================================================
+   CAPA PRO — REFINAMIENTO DE DISEÑO PROFESIONAL
+   Sobreescribe la base conservando el sistema de variables y
+   los dos temas. Sin emojis, con tipografía Inter y acabados
+   de producto de software serio.
+   ========================================================= */
+
+/* --- Marca: la imagen PNG trae su propio fondo navy; el contenedor
+   solo aporta esquinas, borde fino y sombra de profundidad. --- */
+.business-logo {
+  background: transparent;
+  border: 1px solid rgba(103, 232, 249, 0.22);
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(2, 12, 24, 0.55), 0 0 0 4px rgba(56, 189, 248, 0.05);
+}
+:root[data-theme='light'] .business-logo {
+  border-color: rgba(2, 132, 199, 0.28);
+  box-shadow: 0 8px 22px rgba(45, 84, 120, 0.22), 0 0 0 4px rgba(8, 126, 185, 0.06);
+}
+.business-logo__image {
+  border-radius: 15px;
+  object-fit: cover;
+}
+/* El barrido de luz sobre el logo: más lento y sutil, sensación premium. */
+.business-logo::after {
+  background: linear-gradient(110deg, transparent 44%, rgba(255, 255, 255, 0.10) 50%, transparent 56%);
+  animation-duration: 9s;
+}
+
+/* --- Tipografía: jerarquía y aire de producto profesional. --- */
+h1, h2, h3, h4 {
+  letter-spacing: -0.015em;
+}
+.eyebrow {
+  letter-spacing: 0.14em;
+  font-size: 10.5px;
+}
+.welcome h2, .inventory-heading h2 {
+  font-size: 28px;
+  font-weight: 700;
+}
+.stat-card strong, .low-stock-item strong, .product-stock {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* --- Enfoque accesible y consistente en todo control interactivo. --- */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible,
+.dashboard-card:focus-visible {
+  outline: 2px solid rgba(56, 189, 248, 0.85);
+  outline-offset: 2px;
+}
+input:focus, select:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* --- Botones: peso y espaciado de interfaz seria. --- */
+.login-button, .primary-button {
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  background: linear-gradient(135deg, #38bdf8, #22d3ee);
+  color: #06202f;
+  box-shadow: 0 1px 2px rgba(2, 12, 24, 0.4), 0 8px 24px rgba(34, 211, 238, 0.16);
+}
+.login-button:hover, .primary-button:hover {
+  box-shadow: 0 2px 4px rgba(2, 12, 24, 0.4), 0 12px 32px rgba(34, 211, 238, 0.26);
+}
+.secondary-button, .logout-button, .back-button, .header-icon-button, .support-button {
+  background: var(--bg-glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* --- Tarjetas de módulo: relieve sutil tipo "glass panel". --- */
+.dashboard-card {
+  background: linear-gradient(180deg, rgba(20, 33, 56, 0.72), rgba(12, 22, 40, 0.68));
+  border-color: rgba(148, 197, 255, 0.09);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 1px 2px rgba(2, 8, 20, 0.35);
+}
+:root[data-theme='light'] .dashboard-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 250, 255, 0.86));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 1px 3px rgba(45, 84, 120, 0.10);
+}
+.dashboard-card:hover {
+  border-color: rgba(56, 189, 248, 0.38);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 14px 34px rgba(2, 8, 20, 0.45), 0 0 0 1px rgba(56, 189, 248, 0.12);
+}
+.card-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  background: linear-gradient(160deg, rgba(56, 189, 248, 0.14), rgba(56, 189, 248, 0.04));
+  border-color: rgba(56, 189, 248, 0.16);
+}
+.dashboard-card:hover .card-icon {
+  background: linear-gradient(160deg, rgba(56, 189, 248, 0.22), rgba(34, 211, 238, 0.08));
+  box-shadow: 0 0 22px rgba(56, 189, 248, 0.14);
+}
+.card-action-arrow {
+  transition: transform var(--transition);
+}
+.dashboard-card:hover .card-action-arrow {
+  transform: translateX(3px);
+}
+
+/* --- Cabecera: separación más limpia entre marca y controles. --- */
+.dashboard-header {
+  background: rgba(5, 11, 22, 0.78);
+  border-bottom-color: rgba(148, 197, 255, 0.08);
+}
+:root[data-theme='light'] .dashboard-header {
+  background: rgba(250, 253, 255, 0.86);
+}
+.user-info strong {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.user-info span {
+  letter-spacing: 0.12em;
+  font-size: 9.5px;
+}
+
+/* --- Tarjetas de estadísticas: números protagonistas. --- */
+.stat-card {
+  border-color: rgba(148, 197, 255, 0.09);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+.stat-card strong {
+  font-size: 30px;
+  letter-spacing: -0.03em;
+}
+
+/* --- Filas de producto: línea divisoria fina en lugar de cajas pesadas. --- */
+.product-card {
+  border-color: rgba(148, 197, 255, 0.07);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition: border-color var(--transition), background var(--transition), transform var(--transition);
+}
+.product-card:hover {
+  transform: none;
+  border-color: rgba(56, 189, 248, 0.22);
+}
+
+/* --- Login: tarjeta con borde superior de acento muy sutil. --- */
+.login-card {
+  border-color: rgba(148, 197, 255, 0.10);
+  box-shadow: 0 24px 60px rgba(2, 8, 20, 0.55), 0 0 0 1px rgba(56, 189, 248, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.brand h1 {
+  letter-spacing: -0.03em;
+}
+
+/* --- Scrollbar discreta acorde al tema. --- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 160, 210, 0.28) transparent;
+}
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb {
+  background: rgba(120, 160, 210, 0.28);
+  border-radius: 8px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 160, 210, 0.45);
+}
+*::-webkit-scrollbar-track { background: transparent; }

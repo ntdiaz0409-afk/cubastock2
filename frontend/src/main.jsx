@@ -2,6 +2,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
+import './index.css'
 import './App.css'
 
 // El Service Worker se registra solo en producción. Cachear módulos de Vite en

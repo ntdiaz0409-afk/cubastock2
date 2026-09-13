@@ -95,14 +95,14 @@ function AdminDashboard({ user, onLogout }) {
           <DashboardCard
             title="Ventas"
             description="Registrar y consultar ventas."
-            icon="💰"
+            icon="sales"
             onClick={() => navigate('sales')}
           />
 
           <DashboardCard
             title="Inventario"
             description="Existencias y movimientos del inventario."
-            icon="📦"
+            icon="box"
             onClick={() => navigate('inventory')}
           />
 
@@ -111,28 +111,28 @@ function AdminDashboard({ user, onLogout }) {
           <DashboardCard
             title="Configuración del negocio"
             description="Datos, tarjeta de cobro y moneda principal."
-            icon="⚙️"
+            icon="settings"
             onClick={() => navigate('business-settings')}
           />
 
           <DashboardCard
             title="Historial"
             description="Consultar operaciones realizadas."
-            icon="🔄"
+            icon="history"
             onClick={() => navigate('history')}
           />
 
           <DashboardCard
             title="Dependientes"
             description="Gestionar usuarios y permisos."
-            icon="👥"
+            icon="users"
             onClick={() => navigate('dependents')}
           />
 
           <DashboardCard
             title="Estadísticas"
             description="Ingresos y rendimiento del negocio."
-            icon="📊"
+            icon="chart"
             onClick={() => navigate('statistics')}
           />
         </div>

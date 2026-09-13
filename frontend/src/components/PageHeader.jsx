@@ -1,5 +1,6 @@
 // frontend/src/components/PageHeader.jsx
 import Logo from './Logo'
+import Icon from './Icon'
 import { useTheme } from '../hooks/useTheme'
 import AdminNotifications from './AdminNotifications'
 
@@ -12,8 +13,8 @@ function PageHeader({ user, onBack, onLogout, title, showBackButton = true }) {
     <header className="dashboard-header">
       <div className="dashboard-brand">
         {showBackButton && (
-          <button className="back-button" onClick={onBack}>
-            ←
+          <button className="back-button" onClick={onBack} aria-label="Volver">
+            <Icon name="back" size={18} />
           </button>
         )}
 
@@ -39,14 +40,14 @@ function PageHeader({ user, onBack, onLogout, title, showBackButton = true }) {
 
         {/* Ajuste visual disponible para todos los usuarios de la plataforma. */}
         <button className="header-icon-button" onClick={toggleTheme} title={`Cambiar a modo ${theme === 'dark' ? 'claro' : 'oscuro'}`} aria-label={`Cambiar a modo ${theme === 'dark' ? 'claro' : 'oscuro'}`}>
-          {theme === 'dark' ? '☀️' : '🌙'}
+          <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />
         </button>
 
         {isAdmin && (
           <>
             {/* Soporte abre WhatsApp en otra pestaña y no abandona CubaStock. */}
             <a className="support-button" href="https://wa.me/+5358780497?text=Hola%2C%20necesito%20ayuda%20con%20CubaStock" target="_blank" rel="noreferrer" title="Contactar soporte por WhatsApp">
-              💬 <span>Soporte</span>
+              <Icon name="chat" size={16} /> <span>Soporte</span>
             </a>
           </>
         )}
