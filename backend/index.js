@@ -1622,6 +1622,33 @@ app.use((error, req, res, next) => {
 })
 
 // ==============================================
+// ADMIN INICIAL (OPT-IN VÍA ENTORNO)
+// ==============================================
+
+// En despliegues nuevos (p. ej. Render) no siempre es posible ejecutar scripts
+// interactivos contra la base de datos. Si BOOTSTRAP_ADMIN_PASSWORD está
+// definido y la tabla de usuarios está vacía, se crea el administrador inicial
+// una única vez. Es opt-in: sin la variable no hace nada.
+async function ensureInitialAdmin() {
+  const bootstrapPassword = process.env.BOOTSTRAP_ADMIN_PASSWORD
+  if (!bootstrapPassword) return
+
+  const result = await pool.query('SELECT COUNT(*)::int AS count FROM users')
+  if (result.rows[0].count > 0) return
+
+  if (bootstrapPassword.length < 10) {
+    throw new Error('BOOTSTRAP_ADMIN_PASSWORD debe tener al menos 10 caracteres')
+  }
+
+  const passwordHash = await bcrypt.hash(bootstrapPassword, 12)
+  await pool.query(
+    `INSERT INTO users (username, password_hash, role, active) VALUES ('admin', $1, 'ADMIN', true)`,
+    [passwordHash]
+  )
+  console.log('✅ Usuario administrador inicial "admin" creado (borra BOOTSTRAP_ADMIN_PASSWORD tras el primer arranque)')
+}
+
+// ==============================================
 // INICIAR SERVIDOR
 // ==============================================
 
@@ -1629,6 +1656,7 @@ app.use((error, req, res, next) => {
 // en la que frontend pueda usar tablas o columnas que aún no se han preparado.
 async function startServer() {
   await ensureBusinessFields()
+  await ensureInitialAdmin()
   await notifyExistingProductAlerts()
   app.listen(PORT, HOST, () => {
     console.log(`🚀 CubaStock2.0 backend en http://${HOST}:${PORT}`)
