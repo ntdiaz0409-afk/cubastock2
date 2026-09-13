@@ -1,0 +1,106 @@
+1. IDENTIDAD DEL PROYECTO
+Nombre: CubaStock 2.0
+
+Descripción: Aplicación web mobile-first de gestión de inventario y ventas para pequeños negocios en Cuba (cafeterías, tiendas, etc.).
+
+Principio fundamental: Offline-first. Si hay Internet, sincroniza. Si no hay Internet, sigue trabajando. Las ventas se guardan en IndexedDB local y se sincronizan automáticamente al recuperar la conexión.
+
+Público objetivo: Dueños de pequeños negocios y sus dependientes (empleados).
+
+2. STACK TECNOLÓGICO
+Capa	Tecnología
+Frontend	React 19 + Vite
+Backend	Node.js + Express
+Base de datos	PostgreSQL (servidor) + IndexedDB (cliente)
+Autenticación	JWT (almacenado en localStorage)
+Estilos	CSS puro con variables (dark theme)
+Notificaciones	Notificaciones locales del navegador (stock bajo, stock crítico, producto agotado, vencimiento próximo) + alertas Telegram al grupo del negocio
+Gráficos	Recharts (para reportes)
+PWA	Service Worker (sw.js) para modo offline y caché
+3. ESTRUCTURA DEL PROYECTO
+text
+CubaStock2.0/
+├── package.json           # Backend: scripts start/dev/test (el código fuente está en backend/)
+├── backend/
+│   ├── index.js           # Servidor Express (todos los endpoints)
+│   ├── .env               # Variables de entorno (DATABASE_URL, JWT_SECRET, PORT, TELEGRAM_*)
+│   ├── services/          # telegram.js (envío de alertas), stockAlerts.js (alertas idempotentes)
+│   └── scripts/           # Scripts auxiliares (create-admin.js, seed-sample-products.js)
+├── frontend/
+│   ├── public/
+│   │   └── sw.js          # Service Worker (offline y caché)
+│   ├── src/
+│   │   ├── App.jsx        # Enrutamiento principal y login
+│   │   ├── App.css        # Estilos globales (fondos animados, glassmorphism, variables)
+│   │   ├── main.jsx       # Punto de entrada (registra Service Worker en producción)
+│   │   ├── api.js         # Cliente HTTP con manejo de tokens
+│   │   ├── db/            # IndexedDB (db.js, syncQueue.js)
+│   │   ├── hooks/         # Custom hooks (useProducts, useOffline, useStockAlerts, useSalesStats)
+│   │   ├── components/    # Componentes reutilizables (PageHeader, DashboardCard, Toast, etc.)
+│   │   └── pages/         # Páginas principales (AdminDashboard, SalesPage, ReportsPage, etc.)
+│   ├── index.html         # Incluye elementos de fondo animado (partículas, estrellas, grid)
+│   └── vite.config.js     # Configuración de Vite (puerto 5176, proxy a backend)
+4. ROLES Y PERMISOS
+Rol	Permisos
+ADMIN	Todo: crear/editar/eliminar productos, modificar stock, ver todos los reportes, gestionar dependientes (crear, editar, eliminar, resetear contraseña, asignar turnos), ver historial, ver estadísticas, recibir notificaciones de stock bajo/vencimiento.
+DEPENDIENTE	Solo registrar ventas, consultar inventario (sin modificar), ver su propio panel con resumen de ventas, ver comparativa día/anterior, recibir notificaciones (si el admin las activa).
+5. FUNCIONALIDADES YA IMPLEMENTADAS (NO TOCAR SIN AUTORIZACIÓN)
+✅ Login con JWT y expiración (8h).
+
+✅ Panel ADMIN con 6 botones: Ventas, Inventario, Reportes, Historial, Dependientes, Estadísticas.
+
+✅ Panel DEPENDIENTE con 2 botones: Ventas, Inventario.
+
+✅ Registro de ventas con carrito, descuento de stock, y método de pago (EFECTIVO/TARJETA).
+
+✅ Gestión de productos (crear, editar stock, eliminar/desactivar) con campos: nombre, precio_venta, costo_compra, stock, unidad, fecha_vencimiento, nivel_reorden.
+
+✅ Gestión de dependientes (crear, editar, resetear contraseña, activar/desactivar, eliminar) con campos: usuario, contraseña, nombre completo, teléfono, turno, carnet, activo/inactivo. Nota: si el dependiente tiene ventas o movimientos registrados, "eliminar" lo desactiva para conservar el historial contable.
+
+✅ Calendario semanal de turnos (solo ADMIN) con opciones: Libre, Mañana, Tarde, Completo.
+
+✅ Reportes: comparativa diaria (hoy vs ayer), semanal (semana actual vs anterior), mensual (mes actual vs anterior), top 10 productos más vendidos, top 10 productos estancados (ambos con filtro semanal/mensual desde backend).
+
+✅ Modo offline completo: IndexedDB para productos y ventas, cola de sincronización, sincronización automática al recuperar conexión, indicador de estado (Online/Offline/Sincronizando).
+
+✅ Notificaciones (solo para: stock bajo ≤ nivel_reorden, stock crítico ≤ mitad del nivel_reorden, producto agotado = 0, vencimiento próximo ≤ 30 días, producto vencido). Dos canales: notificación local del navegador mientras la app está abierta y mensajes Telegram idempotentes al grupo configurado en el backend. No hay Web Push.
+
+✅ Fondo animado con partículas, estrellas, grid, nebulosa, líneas de escaneo.
+
+✅ Diseño oscuro con variables CSS (glassmorphism, transiciones suaves).
+
+✅ Logo SVG en el header.
+
+6. FUNCIONALIDADES PENDIENTES (NO IMPLEMENTAR SIN CONSULTAR)
+⏳ Exportar reportes a PDF/Excel.
+
+⏳ Filtros avanzados en reportes (rango personalizado, por producto, por dependiente).
+
+⏳ Múltiples almacenes (sucursales).
+
+⏳ Integración con impresora de tickets.
+
+⏳ Dashboard de gráficos interactivos (se quitó el gráfico por ahora, se añadirá después).
+
+7. REGLAS ESTRICTAS PARA EL ASISTENTE DE IA
+Regla	Explicación
+No cambiar la arquitectura sin autorización	No modificar la estructura de carpetas, ni el flujo offline-first, ni la lógica de negocio fundamental.
+No eliminar funcionalidades existentes	Todo lo que ya funciona debe mantenerse (ventas, inventario, dependientes, reportes, offline).
+No introducir dependencias innecesarias	Si una nueva funcionalidad requiere una librería externa, primero preguntar.
+Mantener offline-first	Cualquier nueva funcionalidad debe funcionar sin conexión a Internet (guardar en IndexedDB y sincronizar después).
+Usar las variables CSS para estilos	No usar colores fijos; usar var(--text-primary), var(--accent), etc.
+No cambiar el comportamiento de la autenticación	JWT en localStorage, expiración a las 8h, roles ADMIN/DEPENDIENTE.
+Código completo para reemplazar	Cuando se proporcione un archivo modificado, debe ser el archivo completo (no solo fragmentos) para que el usuario pueda reemplazarlo directamente.
+Explicar los cambios	Cada entrega debe incluir un resumen claro de qué se cambió, por qué y cómo afecta al sistema.
+No tocar el fondo animado (App.css)	Las animaciones del fondo (partículas, estrellas, grid, etc.) son parte de la identidad visual; no modificarlas sin consultar.
+Respetar el diseño dark theme	No introducir elementos con colores claros que rompan la coherencia visual.
+No sobrecargar el frontend	Evitar renderizados innecesarios, usar useMemo, useCallback cuando sea necesario para mantener el rendimiento.
+Seguridad en el backend	Todas las rutas deben tener los middlewares authenticateToken, requireAdmin o requireStaff según corresponda. No exponer información sensible.
+8. ¿CÓMO DEBE ENTREGAR EL CÓDIGO EL ASISTENTE?
+Archivo completo: Siempre proporcionar el archivo completo, no solo el fragmento modificado.
+
+Ruta del archivo: Indicar claramente la ruta donde debe reemplazarse (ej: frontend/src/pages/SalesPage.jsx).
+
+Explicación: Acompañar con un resumen de los cambios (qué se añadió, corrigió o eliminó).
+
+No modificar otros archivos: S

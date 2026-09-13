@@ -1,0 +1,24 @@
+{
+  "name": "cubastock-backend",
+  "version": "2.0.0",
+  "description": "Backend CubaStock 2.0 (Express + PostgreSQL). El código fuente vive en backend/.",
+  "main": "backend/index.js",
+  "scripts": {
+    "start": "node backend/index.js",
+    "dev": "nodemon backend/index.js",
+    "create-admin": "node backend/scripts/create-admin.js",
+    "seed-products": "node backend/scripts/seed-sample-products.js",
+    "test": "node --test backend/services/*.test.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

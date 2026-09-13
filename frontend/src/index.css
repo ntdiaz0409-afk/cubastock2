@@ -1,0 +1,21 @@
+/* Base global: la identidad visual y los componentes viven en App.css. */
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body, #root {
+  min-width: 320px;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}
+/**
+ * Propósito: estilos globales mínimos que complementan la hoja principal.
+ * Responsabilidades: normalización base y reglas compartidas por toda la aplicación.
+ * Dependencias: se carga desde main.jsx junto con App.css cuando corresponda.
+ */
