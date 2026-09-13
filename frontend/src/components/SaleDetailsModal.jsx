@@ -134,7 +134,7 @@ function SaleDetailsModal({ saleId, onClose }) {
           </div>
         ) : error ? (
           <div className="login-error" style={{ marginBottom: '0' }}>
-            ❌ {error}
+            {error}
           </div>
         ) : details ? (
           <>

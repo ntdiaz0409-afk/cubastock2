@@ -1,4 +1,5 @@
 // frontend/src/components/StockAlertBanner.jsx
+import Icon from './Icon'
 import { useState } from 'react'
 import { useStockAlerts } from '../hooks/useStockAlerts'
 
@@ -39,7 +40,7 @@ function StockAlertBanner({ onViewLowStock }) {
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         <span style={{ fontSize: '24px' }}>
-          {criticalCount > 0 ? '🚨' : '⚠️'}
+          <Icon name="alert" size={20} />
         </span>
         <div>
           <strong style={{ color: criticalCount > 0 ? '#fb7185' : '#fbbf24' }}>

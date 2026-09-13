@@ -1,4 +1,5 @@
 // Indicador visual del estado confirmado por useOffline.
+import Icon from './Icon'
 import { useOffline } from '../hooks/useOffline'
 
 function OfflineIndicator() {
@@ -18,7 +19,7 @@ function OfflineIndicator() {
   }
   if (pendingCount > 0) {
     return <button className="connection-indicator connection-indicator--pending" onClick={triggerSync} title="Intentar sincronizar ahora">
-      <span aria-hidden="true">⏳</span><span>{pendingCount} pendiente{pendingCount > 1 ? 's' : ''}</span>
+      <span aria-hidden="true" style={{ display: 'inline-flex' }}><Icon name="history" size={14} /></span><span>{pendingCount} pendiente{pendingCount > 1 ? 's' : ''}</span>
     </button>
   }
   return <div className="connection-indicator connection-indicator--online"><span aria-hidden="true">●</span><span>Online</span></div>

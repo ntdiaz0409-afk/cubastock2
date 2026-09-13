@@ -1,4 +1,5 @@
 // frontend/src/components/DailySalesComparison.jsx
+import Icon from './Icon'
 import { useSalesStats } from '../hooks/useSalesStats'
 
 function DailySalesComparison() {
@@ -31,7 +32,7 @@ function DailySalesComparison() {
         marginBottom: '24px',
         textAlign: 'center'
       }}>
-        <p style={{ color: '#fb7185', fontSize: '14px' }}>⚠️ {stats.error}</p>
+        <p style={{ color: '#fb7185', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}><Icon name="alert" size={16} /> {stats.error}</p>
         <button className="secondary-button" onClick={refresh} style={{ marginTop: '8px' }}>
           Reintentar
         </button>
@@ -61,7 +62,7 @@ function DailySalesComparison() {
       {/* Hoy */}
       <div style={{ textAlign: 'center' }}>
         <p style={{ color: '#8ea4c4', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>
-          📊 Hoy
+          Hoy
         </p>
         <strong style={{ fontSize: '22px', color: '#eef7ff', display: 'block' }}>
           {formatPrice(today.total)}

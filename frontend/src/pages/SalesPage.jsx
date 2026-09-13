@@ -126,14 +126,14 @@ function SalesPage({ user, onBack, onLogout }) {
           return currentCart
         }
 
-        showToast(`✅ ${amount} ${selected.unit}(s) agregados a ${selected.name}`, 'success', 2000)
+        showToast(`${amount} ${selected.unit}(s) agregados a ${selected.name}`, 'success', 2000)
 
         return currentCart.map((item) =>
           item.product.id === selected.id ? { ...item, quantity: newQuantity } : item
         )
       }
 
-      showToast(`✅ ${amount} ${selected.unit}(s) de ${selected.name} agregados al carrito`, 'success', 2000)
+      showToast(`${amount} ${selected.unit}(s) de ${selected.name} agregados al carrito`, 'success', 2000)
       return [...currentCart, { product: selected, quantity: amount }]
     })
 
@@ -144,7 +144,7 @@ function SalesPage({ user, onBack, onLogout }) {
   function removeFromCart(productId) {
     const item = cart.find((i) => i.product.id === productId)
     if (item) {
-      showToast(`❌ ${item.product.name} eliminado del carrito`, 'error', 2000)
+      showToast(`${item.product.name} eliminado del carrito`, 'error', 2000)
     }
     setCart((currentCart) => currentCart.filter((item) => item.product.id !== productId))
   }
@@ -195,7 +195,7 @@ function SalesPage({ user, onBack, onLogout }) {
           })
           const data = await response.json()
           if (response.ok) {
-            showToast(`✅ Venta registrada. Total: $${total.toFixed(2)} CUP`, 'success', 4000)
+            showToast(`Venta registrada. Total: $${total.toFixed(2)} CUP`, 'success', 4000)
             setCart([])
             await loadProducts()
             return
@@ -235,8 +235,8 @@ function SalesPage({ user, onBack, onLogout }) {
       await loadProducts()
 
     } catch (error) {
-      console.error('❌ Error en confirmSale:', error)
-      showToast(`❌ ${error.message || 'Error al procesar la venta.'}`, 'error', 4000)
+      console.error('Error en confirmSale:', error)
+      showToast(`${error.message || 'Error al procesar la venta.'}`, 'error', 4000)
     } finally {
       setSaving(false)
     }

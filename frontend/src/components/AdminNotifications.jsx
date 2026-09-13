@@ -1,3 +1,4 @@
+import Icon from './Icon'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { apiFetch } from '../api'
 
@@ -55,7 +56,7 @@ function AdminNotifications() {
   return (
     <div className="admin-notifications">
       <button className="header-icon-button notification-button" type="button" onClick={togglePanel} aria-label={`Notificaciones${alertCount ? `: ${alertCount}` : ''}`} aria-expanded={isOpen} title="Notificaciones">
-        🔔{hasUnread && <span className="notification-badge" aria-label="Notificaciones sin leer" />}
+        <Icon name="bell" size={18} />{hasUnread && <span className="notification-badge" aria-label="Notificaciones sin leer" />}
       </button>
 
       {isOpen && (
@@ -68,7 +69,7 @@ function AdminNotifications() {
           {!loading && !error && alertCount === 0 && <p className="notification-panel__empty">No hay alertas pendientes.</p>}
           {data.notifications.map((notification) => (
             <article className={`notification-item notification-item--${notification.type.toLowerCase()}`} key={notification.id}>
-              <span>{notification.type === 'EXPIRY' ? '⏳' : '⚠️'}</span>
+              <span className="notification-type-icon">{notification.type === 'EXPIRY' ? <Icon name="history" size={16} /> : <Icon name="alert" size={16} />}</span>
               <div><strong>{notification.title}</strong><p>{notification.message}</p></div>
             </article>
           ))}

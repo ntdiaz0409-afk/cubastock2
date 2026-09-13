@@ -286,7 +286,7 @@ function ReportsPage({ user, onBack, onLogout }) {
         <div className="statistics-section">
           <div className="statistics-section-header">
             <div>
-              <h3>📊 Hoy vs Ayer</h3>
+              <h3>Hoy vs Ayer</h3>
               <p>Comparativa de ventas del día actual con el día anterior</p>
             </div>
           </div>

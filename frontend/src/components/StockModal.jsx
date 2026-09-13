@@ -1,4 +1,5 @@
 // frontend/src/components/StockModal.jsx
+import Icon from './Icon'
 import { useState, useRef, useEffect } from 'react'
 import { apiFetch } from '../api'
 import { showToast } from './Toast'
@@ -114,7 +115,7 @@ function StockModal({ product, onClose, onUpdated }) {
         throw new Error(data.error || 'Error al modificar stock.')
       }
 
-      showToast(`✅ Stock de ${product.name} actualizado`, 'success', 3000)
+      showToast(`Stock de ${product.name} actualizado`, 'success', 3000)
       onUpdated()
       onClose()
     } catch (err) {
@@ -439,7 +440,7 @@ function StockModal({ product, onClose, onUpdated }) {
             onMouseUp={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-              <span style={{ fontSize: '28px' }}>⚠️</span>
+              <span style={{ display: 'inline-flex', color: '#fbbf24' }}><Icon name="alert" size={28} /></span>
               <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 700, color: '#eef7ff' }}>
                 Confirmar modificación
               </h2>

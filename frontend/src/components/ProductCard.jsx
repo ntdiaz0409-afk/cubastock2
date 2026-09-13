@@ -25,10 +25,10 @@ function ProductCard({ product, canEdit, onUpdated }) {
         throw new Error(data.error || 'Error al eliminar el producto')
       }
 
-      showToast(`✅ ${data.message || `${product.name} eliminado correctamente`}`, 'success', 3500)
+      showToast(`${data.message || `${product.name} eliminado correctamente`}`, 'success', 3500)
       onUpdated()
     } catch (error) {
-      showToast(`❌ ${error.message}`, 'error', 3000)
+      showToast(`${error.message}`, 'error', 3000)
     } finally {
       setDeleting(false)
       setShowDeleteConfirm(false)
@@ -45,10 +45,10 @@ function ProductCard({ product, canEdit, onUpdated }) {
       })
       const data = await response.json()
       if (!response.ok) throw new Error(data.error || 'No se pudo reactivar el producto')
-      showToast(`✅ ${data.message}`, 'success', 3000)
+      showToast(`${data.message}`, 'success', 3000)
       onUpdated()
     } catch (error) {
-      showToast(`❌ ${error.message}`, 'error', 3500)
+      showToast(`${error.message}`, 'error', 3500)
     }
   }
 
@@ -67,10 +67,10 @@ function ProductCard({ product, canEdit, onUpdated }) {
         throw new Error(data.error || 'Error al eliminar el producto')
       }
 
-      showToast(`✅ ${data.message}`, 'success', 3500)
+      showToast(`${data.message}`, 'success', 3500)
       onUpdated()
     } catch (error) {
-      showToast(`❌ ${error.message}`, 'error', 3500)
+      showToast(`${error.message}`, 'error', 3500)
     } finally {
       setDeletingPermanently(false)
       setShowPermanentDeleteConfirm(false)

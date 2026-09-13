@@ -1,6 +1,7 @@
 // frontend/src/components/Toast.jsx
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Icon from './Icon'
 
 function Toast({ message, type = 'success', duration = 4000, onClose }) {
   const [visible, setVisible] = useState(true)
@@ -15,10 +16,10 @@ function Toast({ message, type = 'success', duration = 4000, onClose }) {
   }, [duration, onClose])
 
   const icons = {
-    success: '✅',
-    error: '❌',
-    warning: '⚠️',
-    info: 'ℹ️',
+    success: 'check',
+    error: 'alert',
+    warning: 'alert',
+    info: 'bell',
   }
 
   const colors = {
@@ -56,7 +57,7 @@ function Toast({ message, type = 'success', duration = 4000, onClose }) {
             fontFamily: 'Inter, sans-serif',
           }}
         >
-          <span style={{ fontSize: '20px', flexShrink: 0 }}>{icons[type]}</span>
+          <span style={{ display: 'inline-flex', color: color.text, flexShrink: 0 }}><Icon name={icons[type]} size={20} /></span>
           <div style={{ flex: 1 }}>
             <p style={{ 
               margin: 0, 

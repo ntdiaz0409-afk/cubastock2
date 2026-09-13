@@ -1,4 +1,5 @@
 // frontend/src/components/NotificationPermission.jsx
+import Icon from './Icon'
 import { useState } from 'react'
 import { useStockAlerts } from '../hooks/useStockAlerts'
 
@@ -39,7 +40,7 @@ function NotificationPermission() {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <span style={{ fontSize: '22px' }}>🔔</span>
+        <Icon name="bell" size={22} />
         <div>
           <strong style={{ color: '#eef7ff', fontSize: '14px' }}>
             Activa las notificaciones

@@ -41,7 +41,7 @@ function DashboardHome({ user }) {
       const chartData = Object.values(dailySales).slice(-7) // Últimos 7 días
       
       setSalesData(chartData)
-      showToast('📊 Datos cargados correctamente', 'success', 2000)
+      showToast('Datos cargados correctamente', 'success', 2000)
     } catch {
       // El detalle queda registrado para el usuario mediante el toast; no se
       // necesita retener una excepción que esta pantalla no va a renderizar.

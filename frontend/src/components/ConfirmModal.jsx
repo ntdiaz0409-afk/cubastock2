@@ -1,4 +1,5 @@
 // frontend/src/components/ConfirmModal.jsx
+import Icon from './Icon'
 import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -57,7 +58,7 @@ function ConfirmModal({
     switch (type) {
       case 'danger':
         return {
-          icon: '🔴',
+          icon: 'alert',
           border: 'rgba(251, 113, 133, 0.3)',
           bg: 'rgba(251, 113, 133, 0.06)',
           buttonBg: 'linear-gradient(135deg, #ef4444, #dc2626)',
@@ -65,7 +66,7 @@ function ConfirmModal({
         }
       case 'warning':
         return {
-          icon: '⚠️',
+          icon: 'alert',
           border: 'rgba(251, 191, 36, 0.3)',
           bg: 'rgba(251, 191, 36, 0.06)',
           buttonBg: 'linear-gradient(135deg, #f59e0b, #d97706)',
@@ -73,7 +74,7 @@ function ConfirmModal({
         }
       case 'success':
         return {
-          icon: '✅',
+          icon: 'check',
           border: 'rgba(52, 211, 153, 0.3)',
           bg: 'rgba(52, 211, 153, 0.06)',
           buttonBg: 'linear-gradient(135deg, #10b981, #059669)',
@@ -81,7 +82,7 @@ function ConfirmModal({
         }
       default:
         return {
-          icon: 'ℹ️',
+          icon: 'bell',
           border: 'rgba(56, 189, 248, 0.3)',
           bg: 'rgba(56, 189, 248, 0.06)',
           buttonBg: 'linear-gradient(135deg, #0ea5e9, #0284c7)',
@@ -123,7 +124,7 @@ function ConfirmModal({
       >
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-          <span style={{ fontSize: '28px' }}>{colors.icon}</span>
+          <span style={{ display: 'inline-flex', color: '#fbbf24' }}><Icon name={colors.icon} size={26} /></span>
           <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 700, color: '#eef7ff' }}>
             {title}
           </h2>

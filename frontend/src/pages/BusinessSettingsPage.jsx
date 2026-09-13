@@ -96,13 +96,13 @@ function BusinessSettingsPage({ user, onBack, onLogout }) {
       setFromCache(false)
       await saveData(STORES.SETTINGS, { key: SETTINGS_CACHE_KEY, value: data.settings })
 
-      showToast('✅ Configuración del negocio guardada', 'success', 3000)
+      showToast('Configuración del negocio guardada', 'success', 3000)
     } catch (err) {
       const message = err.message?.includes('Failed to fetch')
         ? 'No hay conexión. Esta pantalla necesita Internet para guardar cambios.'
         : err.message
       setError(message)
-      showToast(`❌ ${message}`, 'error', 4000)
+      showToast(`${message}`, 'error', 4000)
     } finally {
       setSaving(false)
     }

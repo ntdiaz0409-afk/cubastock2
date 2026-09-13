@@ -175,18 +175,18 @@ function DependentsPage({ user, onBack, onLogout }) {
         throw new Error(data.error || 'Error al guardar')
       }
 
-      alert(editingUser ? '✅ Usuario actualizado' : '✅ Usuario creado')
+      alert(editingUser ? 'Usuario actualizado' : 'Usuario creado')
       setShowModal(false)
       loadUsers()
     } catch (err) {
-      alert('❌ ' + err.message)
+      alert('' + err.message)
     } finally {
       setSaving(false)
     }
   }
 
   const deleteUser = async (u) => {
-    if (!confirm(`⚠️ ¿Estás seguro de que quieres ELIMINAR PERMANENTEMENTE a "${u.username}"?\n\nSe eliminarán:\n- Todas sus ventas\n- Todos sus movimientos de stock\n- Todos sus datos personales\n\nEsta acción NO se puede deshacer.`)) {
+    if (!confirm(`¿Estás seguro de que quieres ELIMINAR PERMANENTEMENTE a "${u.username}"?\n\nSe eliminarán:\n- Todas sus ventas\n- Todos sus movimientos de stock\n- Todos sus datos personales\n\nEsta acción NO se puede deshacer.`)) {
       return
     }
 
@@ -203,10 +203,10 @@ function DependentsPage({ user, onBack, onLogout }) {
         throw new Error(data.error || 'Error al eliminar')
       }
 
-      alert(`✅ ${data.message}`)
+      alert(`${data.message}`)
       loadUsers()
     } catch (err) {
-      alert('❌ ' + err.message)
+      alert('' + err.message)
     } finally {
       setDeletingId(null)
     }
@@ -226,9 +226,9 @@ function DependentsPage({ user, onBack, onLogout }) {
       })
       const data = await response.json()
       if (!response.ok) throw new Error(data.error)
-      alert('✅ Contraseña actualizada')
+      alert('Contraseña actualizada')
     } catch (err) {
-      alert('❌ ' + err.message)
+      alert('' + err.message)
     }
   }
 
